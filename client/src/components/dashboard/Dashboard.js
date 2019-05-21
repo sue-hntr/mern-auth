@@ -2,19 +2,36 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { logoutUser } from "../../actions/authActions";
+import axios from "axios";
+
 class Dashboard extends Component {
   onLogoutClick = e => {
     e.preventDefault();
     this.props.logoutUser();
   };
-render() {
+  //create a User.find for name of user from props.auth
+  // also remove service worker
+
+  componentDidMount() {
     const { user } = this.props.auth;
+    console.log(user);
+    console.log(user.id);
+  };
+
+
+render() {
+  const { user } = this.props.auth;
+    // User.findByID({ _id: user.id }).then(user => {
+    //   if (user) {
+    //     return res.status(400).json({ email: "Email already exists" });
+    //   } 
+
 return (
       <div style={{ height: "75vh" }} className="container valign-wrapper">
         <div className="row">
           <div className="col s12 center-align">
             <h4>
-              <b>Hey there,</b> {user.name.split(" ")[0]}
+              <b>Hey there,</b> {user.firstname}
               <p className="flow-text grey-text text-darken-1">
                 You are logged into a full-stack{" "}
                 <span style={{ fontFamily: "monospace" }}>MERN</span> app 👏
@@ -38,9 +55,10 @@ return (
     );
   }
 }
+
 Dashboard.propTypes = {
   logoutUser: PropTypes.func.isRequired,
-  auth: PropTypes.object.isRequired
+  auth: PropTypes.object.isRequired,
 };
 const mapStateToProps = state => ({
   auth: state.auth
